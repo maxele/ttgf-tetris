@@ -1,6 +1,6 @@
 # Tiny Tapeout project information
 project:
-  title:        "tt-ris"      # Project title
+  title:        "Tetris"      # Project title
   author:       "Max Masiero"      # Your name
   discord:      "maxeleee"      # Your discord username, for communication and automatically assigning you a Tapeout role (optional)
   description:  "Tetris implemented as ASIC"      # One line description of what your project does
