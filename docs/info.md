@@ -24,7 +24,7 @@ the VGA output.
 
 The VGA Pmod is used.
 
-## Pinout
+## pinout
 
 | Pin | Signal | Pin | Signal |
 | :-: | :----: | :-: | :----: |
