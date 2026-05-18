@@ -31,7 +31,7 @@ module vga_graphics (
 	logic [1:0] r_n;
 	logic [1:0] g_n;
 	logic [1:0] b_n;
-	logic sync_n;
+	logic vsync_n, hsync_n;
 
 	logic [9:0] x_p, x_n;
 	logic [9:0] y_p, y_n;
@@ -53,7 +53,8 @@ module vga_graphics (
 
 	always_comb begin
 		lx = 0; ly = 0;
-		r_n = 0; g_n = 0; b_n = 0; sync_n = 0;
+		r_n = 0; g_n = 0; b_n = 0;
+		hsync_n = 0; vsync_n = 0;
 		new_frame_n = 0;
 
 		x_n = x_p+1;
@@ -71,14 +72,14 @@ module vga_graphics (
 		if (y_p < `VERTICAL_BACK_PORCH) begin
 			r_n = 1;
 		end else if (y_p > `VERTICAL_TOTAL-`VERTICAL_SYNC) begin
-			sync_n = 0;
+			vsync_n = 1;
 			g_n = 1;
 		end else if (y_p > `VERTICAL_TOTAL-`VERTICAL_FRONT_PORCH-`VERTICAL_SYNC) begin
 			b_n = 1;
 		end else if (x_p < `HORIZONTAL_BACK_PORCH) begin
 			r_n = 2;
 		end else if (x_p > `HORIZONTAL_TOTAL-`HORIZONTAL_SYNC) begin
-			sync_n = 0;
+			hsync_n = 1;
 			g_n = 2;
 		end else if (x_p > `HORIZONTAL_TOTAL-`HORIZONTAL_FRONT_PORCH-`HORIZONTAL_SYNC) begin
 			b_n = 2;
@@ -113,5 +114,5 @@ module vga_graphics (
 	end
 
 	assign new_frame_out = new_frame_n;
-	assign color_out = {r_n, g_n, b_n, sync_n, 1'h0};
+	assign color_out = {r_n[1], g_n[1], b_n[1], vsync_n, r_n[0], g_n[0], b_n[0], hsync_n};
 endmodule

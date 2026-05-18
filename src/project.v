@@ -309,7 +309,8 @@ module vga_graphics (
 	reg [1:0] r_n;
 	reg [1:0] g_n;
 	reg [1:0] b_n;
-	reg sync_n;
+	reg vsync_n;
+	reg hsync_n;
 	reg [9:0] x_p;
 	reg [9:0] x_n;
 	reg [9:0] y_p;
@@ -334,7 +335,8 @@ module vga_graphics (
 		r_n = 0;
 		g_n = 0;
 		b_n = 0;
-		sync_n = 0;
+		hsync_n = 0;
+		vsync_n = 0;
 		new_frame_n = 0;
 		x_n = x_p + 1;
 		y_n = y_p;
@@ -350,7 +352,7 @@ module vga_graphics (
 		if (y_p < 10'd33)
 			r_n = 1;
 		else if (y_p > (10'd525 - 10'd2)) begin
-			sync_n = 0;
+			vsync_n = 1;
 			g_n = 1;
 		end
 		else if (y_p > ((10'd525 - 10'd10) - 10'd2))
@@ -358,7 +360,7 @@ module vga_graphics (
 		else if (x_p < 10'd48)
 			r_n = 2;
 		else if (x_p > (10'd800 - 10'd96)) begin
-			sync_n = 0;
+			hsync_n = 1;
 			g_n = 2;
 		end
 		else if (x_p > ((10'd800 - 10'd16) - 10'd96))
@@ -384,6 +386,7 @@ module vga_graphics (
 		end
 	end
 	assign new_frame_out = new_frame_n;
-	assign color_out = {r_n, g_n, b_n, sync_n, 1'h0};
+	assign color_out = {r_n, g_n, b_n, vsync_n, hsync_n};
+	assign color_out = {r_n[1], g_n[1], b_n[1], vsync_n, r_n[0], g_n[0], b_n[0], hsync_n};
 	initial _sv2v_0 = 0;
 endmodule

@@ -23,3 +23,15 @@ the VGA output.
 ## External hardware
 
 The VGA Pmod is used.
+
+## Pinout
+
+| Pin | Signal | Pin | Signal |
+| :-: | :----: | :-: | :----: |
+| top row    | | bottom row | |
+| 1   | R1     | 7   | R0     |
+| 2   | G1     | 8   | G0     |
+| 3   | B1     | 9   | B0     |
+| 4   | VS     | 10  | HS     |
+| 5   | GND    | 11  | GND    |
+| 6   | VCC    | 12  | VCC    |
