@@ -86,10 +86,8 @@ module vga_graphics (
 			// If in the actually visible space
 			// local variables relative to the pixelated version
 			// of the visible space
-			lxtmp = x_p - `HORIZONTAL_BACK_PORCH;
-			lx = lxtmp[9:4];
-			lytmp = `VERTICAL_VISIBLE - y_p;
-			ly = lytmp[9:4];
+			lx = x_p[9:4] - (`HORIZONTAL_BACK_PORCH >> 3);
+			ly = (`VERTICAL_VISIBLE >> 3) - y_p[9:4];
 
 			if (lx == 28 && ly >= 8 && ly < 8+`DEBUG_NUMBER_SIZE) begin
 				g_n = 1;

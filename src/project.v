@@ -316,8 +316,8 @@ module vga_graphics (
 	reg [9:0] y_n;
 	reg signed [5:0] lx;
 	reg signed [5:0] ly;
-	reg signed [9:0] lxtmp;
-	reg signed [9:0] lytmp;
+	wire signed [9:0] lxtmp;
+	wire signed [9:0] lytmp;
 	always @(posedge clk or posedge rst_n) begin
 		if (rst_n) begin
 			x_p <= 0;
@@ -364,10 +364,8 @@ module vga_graphics (
 		else if (x_p > ((10'd800 - 10'd16) - 10'd96))
 			b_n = 2;
 		else begin
-			lxtmp = x_p - 10'd48;
-			lx = lxtmp[9:4];
-			lytmp = ((10'd525 - 10'd10) - 10'd2) - y_p;
-			ly = lytmp[9:4];
+			lx = x_p[9:4] - (10'd48 >> 3);
+			ly = (((10'd525 - 10'd10) - 10'd2) >> 3) - y_p[9:4];
 			if (((lx == 28) && (ly >= 8)) && (ly < 24)) begin
 				g_n = 1;
 				if (number_in[ly - 8])

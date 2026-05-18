@@ -9,12 +9,17 @@ You can also include images in this folder and reference them in the markdown. E
 
 ## How it works
 
-Explain how your project works
+This implementation of tetris is split into 4 modules. The top module calls the
+other modules. The input buffer takes `ui_in` and buffers it's bits. The VGA
+graphics module implements vga graphics. The valid placement module moves the
+active piece according to the transformation type, then checks if it collides
+with the field.
 
 ## How to test
 
-Explain how to use your project
+Simply compile the testbench in `./tb/`. It was writte in SDL3 and displays
+the VGA output.
 
 ## External hardware
 
-List external hardware used in your project (e.g. PMOD, LED display, etc), if any
+The VGA Pmod is used.
