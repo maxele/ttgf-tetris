@@ -21,7 +21,7 @@ module vga_graphics (
 	input  [3:0][3:0] active_piece_in,
 	input  signed [4:0] active_piece_x_in,
 	input  signed [4:0] active_piece_y_in,
-	input  [7:0] number_in,
+	input  [`DEBUG_NUMBER_SIZE-1:0] number_in,
 	output [7:0] color_out,
 	output new_frame_out,
 	input  clk,
@@ -87,7 +87,7 @@ module vga_graphics (
 			lx = {x_p - `HORIZONTAL_BACK_PORCH}[9:4];
 			ly = {`VERTICAL_VISIBLE - y_p}[9:4];
 
-			if (lx == 28 && ly >= 8 && ly < 16) begin
+			if (lx == 28 && ly >= 8 && ly < 8+`DEBUG_NUMBER_SIZE) begin
 				g_n = 1;
 				if (number_in[ly-8])
 					g_n = 3;
@@ -108,10 +108,7 @@ module vga_graphics (
 				end
 			end
 		end
-
 	end
-
-	wire _unused = &{field_in, active_piece_in, active_piece_x_in, active_piece_y_in};
 
 	assign new_frame_out = new_frame_n;
 	assign color_out = {r_n, g_n, b_n, sync_n, 1'h0};

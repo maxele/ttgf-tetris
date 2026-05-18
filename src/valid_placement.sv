@@ -23,10 +23,10 @@ module valid_placement (
 	logic signed [4:0] x;
 
 	always_comb begin
-		valid = 1;
 		piece = active_piece_in;
 		x = active_piece_x_in;
 		y = active_piece_y_in;
+		valid = 0;
 		case (transformation_type_in)
 			INPUT_DROP: y = active_piece_y_in-1;
 			INPUT_RIGHT: x = active_piece_x_in+1;
@@ -46,11 +46,10 @@ module valid_placement (
 			default: valid = 0;
 		endcase
 
-		valid = valid &&
-			&~(field_in[y+0] & ({piece[0], 6'b0} >> x)) &
-			&~(field_in[y+1] & ({piece[1], 6'b0} >> x)) &
-			&~(field_in[y+2] & ({piece[2], 6'b0} >> x)) &
-			&~(field_in[y+3] & ({piece[3], 6'b0} >> x));
+		valid = ~|({12'b0, piece[0]} << (x+3) & {3'b111, field_in[y], 3'b111}) &
+			~|({12'b0, piece[1]} << (x+3) & {3'b111, field_in[y+1], 3'b111}) &
+			~|({12'b0, piece[2]} << (x+3) & {3'b111, field_in[y+2], 3'b111}) &
+			~|({12'b0, piece[3]} << (x+3) & {3'b111, field_in[y+3], 3'b111});
 	end
 
 	assign active_piece_out = piece;

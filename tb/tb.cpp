@@ -15,14 +15,22 @@ Uint8 pixels[VGA_W*VGA_H][4];
 
 char gamepad_simulator(const bool *key_states, int len) {
 	char ret = 0;
-	ret = ret | 0b00000001 * key_states[SDL_SCANCODE_J]; // uio[0] - right
-	ret = ret | 0b00000010 * key_states[SDL_SCANCODE_K]; // uio[1] - left
-	ret = ret | 0b00000100 * key_states[SDL_SCANCODE_L]; // uio[2] - down
-	ret = ret | 0b00001000 * key_states[SDL_SCANCODE_SPACE]; // uio[3] - up
-	ret = ret | 0b00010000 * key_states[SDL_SCANCODE_D]; // uio[4] - A
-	ret = ret | 0b00100000 * key_states[SDL_SCANCODE_W]; // uio[5] - B
-	ret = ret | 0b01000000 * key_states[SDL_SCANCODE_R]; // uio[6] - X
-	ret = ret | 0b10000000 * key_states[SDL_SCANCODE_R]; // uio[7] - Y
+	// uio[0] - right
+	// uio[1] - left
+	// uio[2] - down
+	// uio[3] - up
+	// uio[4] - A
+	// uio[5] - B
+	// uio[6] - X
+	// uio[7] - Y
+	ret = ret | 0b00000001 * key_states[SDL_SCANCODE_J];     
+	ret = ret | 0b00000010 * key_states[SDL_SCANCODE_K];     
+	ret = ret | 0b00000100 * key_states[SDL_SCANCODE_R];     
+	// ret = ret | 0b00001000 * key_states[SDL_SCANCODE_SPACE]; 
+	// ret = ret | 0b00010000 * key_states[SDL_SCANCODE_D];     
+	// ret = ret | 0b00100000 * key_states[SDL_SCANCODE_W];     
+	// ret = ret | 0b01000000 * key_states[SDL_SCANCODE_R];     
+	// ret = ret | 0b10000000 * key_states[SDL_SCANCODE_R];     
 	return ret;
 }
 
@@ -95,11 +103,11 @@ int main(int argc, char **argv) {
 			r.y = (h - w / aspect_ratio)/2;
 		}
 
-		const int max_cycles = VGA_W;
+		const int max_cycles = VGA_W*VGA_H;
 		int len;
 		unsigned char gamepad = gamepad_simulator(SDL_GetKeyboardState(&len), len);
 		for (int cycle = 0; cycle < max_cycles; ++cycle) {
-			top->uio_in = gamepad;
+			top->ui_in = gamepad;
 			// std::cout << std::bitset<8>(top->uio_in) << std::endl;
 			contextp->timeInc(1);
 			top->clk = 0; top->eval(); tfp->dump(contextp->time()); main_time += half_period;

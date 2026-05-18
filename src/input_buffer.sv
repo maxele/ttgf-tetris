@@ -70,8 +70,9 @@ module input_buffer (
 				else 
 					keys_registers_n[i] = 0;
 			end
-			if (keys_registers_p[i] == `FIRST_KEYPRESS_DELAY
-				|| keys_registers_p[i] == `FIRST_KEYPRESS_DELAY+1+`SECOND_KEYPRESS_DELAY) begin
+			if (keys_registers_p[i] == 1 ||
+				keys_registers_p[i] == `FIRST_KEYPRESS_DELAY ||
+				keys_registers_p[i] == `FIRST_KEYPRESS_DELAY+1+`SECOND_KEYPRESS_DELAY) begin
 				// add input to circular buffer
 				circular_buffer_n[index_end_n] = i+1;
 				index_end_n = index_end_p + 1;
@@ -91,14 +92,14 @@ module input_buffer (
 			keys_registers_n[2] = 0;
 		end
 
-		// // for automatic drop
-		// keys_registers_n[3] = keys_registers_p[3] + 1;
-		// if (keys_registers_p[3] == 15) begin
-		// // 	// add input to circular buffer
-		// 	circular_buffer_n[index_end_n] = INPUT_DROP;
-		// 	index_end_n = index_end_p + 1;
-		// 	keys_registers_n[3] = 0;
-		// end
+		// for automatic drop
+		if (new_frame) keys_registers_n[3] = keys_registers_p[3] + 1;
+		if (keys_registers_p[3] == 4) begin
+		 	// add input to circular buffer
+			circular_buffer_n[index_end_n] = INPUT_DROP;
+			index_end_n = index_end_p + 1;
+			keys_registers_n[3] = 0;
+		end
 	end
 
 	assign input_out = circular_buffer_p[index_start_p];
