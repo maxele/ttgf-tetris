@@ -119,13 +119,10 @@ module tt_um_maxele (
 		should_place_n = should_place_p;
 
 		if (should_place_p) begin
-			// field_n[active_piece_y_p] = {({9'b0, active_piece[0]} << (active_piece_x_p+3) | {field_p[active_piece_y_p], 3'b000})}[11:2];
-			// field_n[active_piece_y_p] = ({6'b0, active_piece_p[0]} << (active_piece_x_p)) & {field_p[active_piece_y_p]};
 			active_piece_x_n = 4;
 			active_piece_y_n = 16;
 			number_n = -1;
 			should_place_n = 0;
-			// input_next_n = 0;
 		end else begin
 			if (new_frame && input_to_be_processed != INPUT_NONE) begin
 				transformation_type = input_to_be_processed;
@@ -135,8 +132,6 @@ module tt_um_maxele (
 			if (transformation_type == INPUT_DROP) begin
 				number_n = {3'b111, 12'b0, !transformation_valid};
 				if (!transformation_valid) should_place_n = 1;
-				// field_n = field_p;
-				// field_n[active_piece_y_p] = field_p[active_piece_y_p];
 			end
 
 			if (transformation_type != INPUT_NONE && transformation_valid) begin

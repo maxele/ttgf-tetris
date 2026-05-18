@@ -38,6 +38,8 @@ module vga_graphics (
 
 	logic signed [5:0] lx;
 	logic signed [5:0] ly;
+	logic signed [9:0] lxtmp;
+	logic signed [9:0] lytmp;
 
 	always_ff @(posedge clk or posedge rst_n) begin
 		if (rst_n) begin
@@ -84,8 +86,10 @@ module vga_graphics (
 			// If in the actually visible space
 			// local variables relative to the pixelated version
 			// of the visible space
-			lx = {x_p - `HORIZONTAL_BACK_PORCH}[9:4];
-			ly = {`VERTICAL_VISIBLE - y_p}[9:4];
+			lxtmp = x_p - `HORIZONTAL_BACK_PORCH;
+			lx = lxtmp[9:4];
+			lytmp = `VERTICAL_VISIBLE - y_p;
+			ly = lytmp[9:4];
 
 			if (lx == 28 && ly >= 8 && ly < 8+`DEBUG_NUMBER_SIZE) begin
 				g_n = 1;
